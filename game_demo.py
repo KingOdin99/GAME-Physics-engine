@@ -1,5 +1,4 @@
 from tracemalloc import start
-
 import pygame
 import sys
 import math
@@ -124,7 +123,8 @@ while True:
                               velocity=Vector2D(random.uniform(-300, 300), random.uniform(-300, 300)), 
                               radius=20, enemy=True)
         world.add_body(new_enemy)
-        
+    if game_over == True:
+        world.add_body(new_enemy=False)
 
     if not game_over:
         keys = pygame.key.get_pressed()
@@ -174,18 +174,19 @@ while True:
         if time.time() - last_increase > 120:
              for body in world.bodies:
                 if body.enemy:
-                    body.velocity.x *= 1.2   # increase speed by 20%
-                    body.velocity.y *= 1.2
-                    last_increase = time.time()  # reset the 2‑minute timer
+                    body.velocity.x *= 1.5  
+                    body.velocity.y *= 1.15
+                    last_increase = time.time() 
  
         
     else:
+        game_over = True
         elapsed = elapsed
         font = pygame.font.SysFont(None, 72)
-        text = font.render("EXPLOSION! GAME OVER", True, (255, 155, 0))
-        screen.blit(text, (50, HEIGHT//2 - 150))
+        text = font.render("!!!GAME OVER!!!", True, (255, 155, 0))
+        screen.blit(text, (215, HEIGHT//2 - 150))
         timer = font.render(f"Time: {minutes:02d}:{seconds:02d}", True, (255, 255, 255))
-        screen.blit(timer, (50, HEIGHT//2 - 50))
+        screen.blit(timer, (215, HEIGHT//2 - 200))
 
     pygame.display.flip()
     clock.tick(60)

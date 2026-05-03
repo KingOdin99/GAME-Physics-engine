@@ -1,4 +1,5 @@
 import math
+from random import random
 
 class Vector2D:
     def __init__(self, x=0.0, y=0.0):
@@ -31,7 +32,7 @@ class RigidBody:
         self.position = position if position else Vector2D()
         self.velocity = velocity if velocity else Vector2D()
         self.force = Vector2D()
-        self.radius = radius  # for collision
+        self.radius = radius  
 
     def apply_force(self, force):
         self.force = self.force + force
@@ -41,7 +42,24 @@ class RigidBody:
         acceleration = Vector2D(self.force.x / self.mass, self.force.y / self.mass)
         self.velocity = self.velocity + acceleration * dt
         self.position = self.position + self.velocity * dt
-        self.force = Vector2D()  # reset force after update
+        self.force = Vector2D()  
+class Explosion:
+    def __init__(self, position, color=(255, 200, 0)):
+        self.particles = []
+        for _ in range(30):  
+            velocity = Vector2D(random.uniform(-200, 200), random.uniform(-200, 200))
+            self.particles.append({
+                "pos": Vector2D(position.x, position.y),
+                "vel": velocity,
+                "life": random.randint(20, 40)
+            })
+        self.color = color
+
+    def update(self):
+        for p in self.particles:
+            p["pos"] = p["pos"] + p["vel"] * 0.05
+            p["life"] -= 1
+        self.particles = [p for p in self.particles if p["life"] > 0]
 
 class PhysicsWorld:
     def __init__(self):
@@ -61,7 +79,10 @@ class PhysicsWorld:
                 a, b = self.bodies[i], self.bodies[j]
                 dist = (a.position - b.position).magnitude()
                 if dist < a.radius + b.radius:
-                    # Simple elastic collision response
+                    if a.controllable and b.enemy:
+                        return "explosion"
+                    if b.controllable and a.enemy:
+                        return "explosion"
                     self.resolve_collision(a, b)
 
     def resolve_collision(self, a, b):
@@ -70,10 +91,9 @@ class PhysicsWorld:
         vel_along_normal = relative_velocity.x * normal.x + relative_velocity.y * normal.y
 
         if vel_along_normal > 0:
-            return  # already separating
-
-        # Elastic collision impulse
-        restitution = 1.0  # perfectly elastic
+            return  
+        
+        restitution = 1.0
         impulse_mag = -(1 + restitution) * vel_along_normal
         impulse_mag /= (1/a.mass + 1/b.mass)
 
