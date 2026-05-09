@@ -1,0 +1,78 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(55deg, #08000b 20%, #3d0160 45%, #ffffff 55%, #8d00ca 65%);
+    background-size: 400% 400%;
+    animation: waveAnimation 18s ease infinite;
+}
+
+
+@keyframes waveAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+.container{
+    max-width: 400px;
+    margin: 200px auto;
+    padding: 70px;
+    background-color: #c24fcf;
+    border-radius: 25px;
+    box-shadow: 20px 20px 10px rgba(17, 0, 10, 0.103);
+    
+}
+
+
+h1{
+    text-align: center;
+    margin-bottom: 30px;
+    text-decoration: justify;
+    color: rgba(89, 4, 142, 0.995);
+    text-shadow: 22px 12px 55px #ffffff;
+}
+
+label{
+    display: block;
+    margin-bottom: 5px;
+    text-align: center;
+    margin-bottom: 30px;
+    color: rgba(52, 7, 72, 0.995);
+    text-shadow: 2px 0px 5px #832795;
+    text-size-adjust: 100%;
+}
+input[type="number"]
+{
+    width: 90%;
+    padding: 12px;
+    margin-bottom: 0px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+input[type="length"]:focus
+{
+    border-color: #f9effd;
+    outline: none;
+}
+button{
+    width: 90%;
+    padding: 12px;
+    background-color: #bb02f9;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 5px;
+}
+button:hover{
+    background-color: #a47c4bf0;
+    text-align: center;
+    
+}
+.result{
+    margin-top: 500px;
+    padding: 30px;
+    background-color: #175492;
+    border-radius: 4px;
+    word-break: break-all;
+}
